@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Dashboard - Escape from College</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Team Dashboard</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="team-info">
+            <h2>{{ team.team_name }}</h2>
+            <p>Current Round: {{ team.current_round }}</p>
+        </div>
+
+        {% if team.current_round > 4 %}
+            <div class="congratulations">
+                <h2>🎉 Congratulations! 🎉</h2>
+                <p>You have completed all rounds!</p>
+                {% if team.position == 1 %}
+                    <h3>🏆 Congratulations! You are the WINNER! 🏆</h3>
+                {% elif team.position == 2 %}
+                    <h3>🥈 Congratulations! You are the RUNNER-UP! 🥈</h3>
+                {% endif %}
+            </div>
+        {% elif team.is_active %}
+            <div class="round-submission">
+                <h3>Submit Answer for Round {{ team.current_round }}</h3>
+                <form method="POST" action="{{ url_for('submit_answer') }}" class="answer-form">
+                    <input type="hidden" name="round" value="{{ team.current_round }}">
+                    <div class="form-group">
+                        <label for="answer">Enter 16-digit code:</label>
+                        <input type="text" id="answer" name="answer" required pattern="[0-9]{16}" maxlength="16">
+                    </div>
+                    <button type="submit" class="btn">Submit</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="alert warning">Your team is currently inactive. Please contact the admin.</div>
+        {% endif %}
+    </div>
+</body>
+</html>

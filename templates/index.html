@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape from College</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Escape from College</h1>
+        <div class="buttons">
+            <a href="{{ url_for('login') }}" class="btn">Team Login</a>
+            <a href="{{ url_for('admin_login') }}" class="btn">Admin Login</a>
+        </div>
+        <div class="leaderboard">
+            <h2>Leaderboard</h2>
+            {% for team in leaderboard %}
+            <div class="team-entry">
+                <span class="team-name">{{ team.team_name }}</span>
+                <span class="team-round">Round {{ team.current_round }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

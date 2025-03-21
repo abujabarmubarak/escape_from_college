@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Escape from College</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="upload-section">
+            <h2>Upload Teams</h2>
+            <form method="POST" action="{{ url_for('upload_teams') }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file">Select Excel File:</label>
+                    <input type="file" id="file" name="file" accept=".xlsx,.xls" required>
+                </div>
+                <button type="submit" class="btn">Upload</button>
+            </form>
+        </div>
+
+        <div class="teams-list">
+            <h2>Teams Status</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Team Name</th>
+                        <th>Current Round</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in teams %}
+                    <tr>
+                        <td>{{ team.team_name }}</td>
+                        <td>Round {{ team.current_round }}</td>
+                        <td>{{ 'Active' if team.is_active else 'Inactive' }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('toggle_team_status') }}" style="display: inline;">
+                                <input type="hidden" name="team_id" value="{{ team.team_id }}">
+                                <button type="submit" class="btn-small {{ 'btn-danger' if team.is_active else 'btn-success' }}">
+                                    {{ 'Deactivate' if team.is_active else 'Activate' }}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

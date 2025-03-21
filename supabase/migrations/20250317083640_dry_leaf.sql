@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS teams (
+    id SERIAL PRIMARY KEY,
+    team_name VARCHAR(100) NOT NULL,
+    team_id VARCHAR(50) UNIQUE NOT NULL,
+    team_password VARCHAR(100) NOT NULL,
+    member1 VARCHAR(100),
+    member2 VARCHAR(100),
+    member3 VARCHAR(100),
+    member4 VARCHAR(100),
+    r1 VARCHAR(16) NOT NULL,
+    r2 VARCHAR(16) NOT NULL,
+    r3 VARCHAR(16) NOT NULL,
+    r4 VARCHAR(16) NOT NULL,
+    current_round INTEGER DEFAULT 1,
+    is_active BOOLEAN DEFAULT true,
+    round1_completion_time TIMESTAMP,
+    round2_completion_time TIMESTAMP,
+    round3_completion_time TIMESTAMP,
+    round4_completion_time TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
